@@ -13,7 +13,7 @@ The default voice IDs in the codebase are Sierra's internal voices and **will no
 
 ## Automated Setup (Recommended)
 
-A script automates the entire process — it calls the ElevenLabs Voice Design API to create all voices and prints the environment variables to paste into your `.env`:
+**This is the recommended way to set up voices.** The script calls the ElevenLabs Voice Design API to create all voices with the correct parameters and prints the environment variables to paste into your `.env`. It uses a fixed seed for reproducibility, so everyone running the script gets the same voices.
 
 ```bash
 # Create all 7 voices
@@ -34,10 +34,10 @@ python -m tau2.voice.scripts.setup_voices --preview
 
 The script uses a fixed random seed (`--seed 42` by default) so that the same prompt always produces the same voice. You can override it with `--seed <value>`.
 
-To try the newer ElevenLabs TTV v3 model instead of the default v2:
+To use the older ElevenLabs TTV v2 model instead of the default v3:
 
 ```bash
-python -m tau2.voice.scripts.setup_voices --model eleven_ttv_v3
+python -m tau2.voice.scripts.setup_voices --model eleven_multilingual_ttv_v2
 ```
 
 **Duplicate detection:** If voices named `tau2_*` already exist in your ElevenLabs account, the script will list them and ask what to do: **replace** (delete old, create new), **duplicate** (keep both), **skip** (only create missing), or **abort**. Use `--force` to skip the prompt and replace automatically.
@@ -46,7 +46,7 @@ The script outputs a block of `TAU2_VOICE_ID_*=...` lines — copy them into you
 
 ## Manual Setup via ElevenLabs UI
 
-If you prefer to create voices manually (e.g., to iterate on the voice sound), follow the steps below.
+> **Note:** The [automated setup](#automated-setup-recommended) above is strongly recommended. It ensures correct parameters (seed, loudness, guidance scale, model) and avoids manual errors. Only use the manual approach if you need fine-grained control over individual voice generation (e.g., regenerating until you find a voice you like).
 
 ### Step 1: Create Voices with Voice Design
 
