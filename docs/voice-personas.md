@@ -11,7 +11,31 @@ The default voice IDs in the codebase are Sierra's internal voices and **will no
 - An [ElevenLabs](https://elevenlabs.io/) account (free tier works for testing)
 - `ELEVENLABS_API_KEY` set in your `.env` file
 
-## Step 1: Create Voices with Voice Design
+## Automated Setup (Recommended)
+
+A script automates the entire process — it calls the ElevenLabs Voice Design API to create all voices and prints the environment variables to paste into your `.env`:
+
+```bash
+# Create all 7 voices
+python -m tau2.voice.scripts.setup_voices
+
+# Create only the 2 control personas (for quick testing)
+python -m tau2.voice.scripts.setup_voices --control-only
+
+# Dry run — see what would be created without calling the API
+python -m tau2.voice.scripts.setup_voices --dry-run
+
+# Preview each voice audio before saving
+python -m tau2.voice.scripts.setup_voices --preview
+```
+
+The script outputs a block of `TAU2_VOICE_ID_*=...` lines — copy them into your `.env` file and you're done. Skip to [Step 3: Verify](#step-3-verify).
+
+## Manual Setup via ElevenLabs UI
+
+If you prefer to create voices manually (e.g., to iterate on the voice sound), follow the steps below.
+
+### Step 1: Create Voices with Voice Design
 
 ElevenLabs Voice Design lets you create voices from a text prompt — the same prompts used to define the personas in τ-bench.
 
@@ -61,7 +85,7 @@ Use these prompts to create voices that match the built-in personas.
 
 > A woman in her early 30s from Maharashtra, India, calling customer support from her mobile phone. She speaks Indian English with a strong Maharashtrian accent — noticeable regional intonation and rhythm. Her tone is slightly annoyed and hurried, matter-of-fact, and focused on getting the issue resolved quickly. Her voice has medium pitch, firm delivery, short sentences, and faint background room tone typical of a phone call.
 
-## Step 2: Configure Voice IDs
+### Step 2: Configure Voice IDs
 
 Once you've created the voices, set environment variables in your `.env` file. The framework picks these up automatically — no code changes needed.
 
@@ -80,7 +104,7 @@ TAU2_VOICE_ID_PRIYA_PATIL=your_priya_voice_id
 
 The environment variable pattern is `TAU2_VOICE_ID_<PERSONA_NAME_UPPER>`. If a variable is not set, the framework falls back to the built-in default (which only works for Sierra-internal use).
 
-### Minimal setup
+#### Minimal setup
 
 You don't need to create all 7 voices. For quick testing, create just the two **control** personas (Matt Delaney and Lisa Brenner) and run with `--speech-complexity control`:
 
@@ -89,6 +113,8 @@ tau2 run --domain retail --audio-native --speech-complexity control --num-tasks 
 ```
 
 ## Step 3: Verify
+
+> Both the automated script and manual setup paths converge here.
 
 Test that your voices work with the synthesis CLI:
 
