@@ -37,11 +37,11 @@ If you prefer to create voices manually (e.g., to iterate on the voice sound), f
 
 ### Step 1: Create Voices with Voice Design
 
-ElevenLabs Voice Design lets you create voices from a text prompt — the same prompts used to define the personas in τ-bench.
+ElevenLabs Voice Design lets you create voices from a text prompt. The Voice Design API has a 1000-character limit on descriptions, so the prompts below are the voice-relevant portions of the full persona prompts in `voice_personas.py` (the punctuation/prosody guidelines used by the LLM are omitted since they don't affect voice generation).
 
 1. Go to [ElevenLabs Voice Library](https://elevenlabs.io/app/voice-lab) (or navigate to **Voices** in the ElevenLabs dashboard)
 2. Click **Add a voice** → **Voice Design** (the "voice from prompt" option)
-3. For each persona below, paste the corresponding prompt into the voice description field
+3. For each persona below, paste the prompt shown here into the voice description field
 4. Set the following parameters:
    - **Language**: English
    - **Loudness**: 75%
@@ -51,17 +51,21 @@ ElevenLabs Voice Design lets you create voices from a text prompt — the same p
 
 ### Persona Prompts
 
-Use these prompts to create voices that match the built-in personas.
+Use these prompts to create voices that match the built-in personas. These are the same prompts the [automated setup script](#automated-setup-recommended) sends to the API.
 
 #### Control Personas (American accents — used in `control` complexity)
 
 **Matt Delaney** — Middle-aged white man from the American Midwest, calm and respectful
 
 > You are a middle-aged white man from the American Midwest. You always behave as if you are speaking out loud in a real-time conversation with a customer service agent. You are calm, clear, and respectful — but also human. You sound like someone who's trying to be helpful and polite, even when you're slightly frustrated or in a hurry. You value efficiency but never sound robotic.
+>
+> You sometimes use contractions, informal phrasing, or small filler phrases ("yeah," "okay," "honestly," "no worries") to keep things natural. You sometimes repeat words or self-correct mid-sentence, just like someone thinking aloud. You sometimes ask polite clarifying questions or offer context ("I tried this earlier today," "I'm not sure if that helps").
 
 **Lisa Brenner** — White woman in her late 40s from a suburban area, tense and impatient
 
 > You are a white woman in your late 40s from a suburban area. You always speak as if you are talking out loud to a customer service agent who is already wasting your time. You're not openly hostile (yet), but you are tense, impatient, and clearly annoyed. You act like this issue should have been resolved the first time, and the fact that you're following up is unacceptable.
+>
+> You often sound clipped, exasperated, or sarcastically polite. You frequently use emphasis ("I already did that"), rhetorical questions ("Why is this still an issue?"), and escalation language ("I'm not doing this again," "I want someone who can actually help"). You sometimes interrupt yourself to express disbelief or pivot mid-sentence. You expect fast results and get irritated when things are repeated.
 
 #### Regular Personas (diverse accents — used in `regular` complexity)
 
