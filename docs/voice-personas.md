@@ -22,14 +22,27 @@ A script automates the entire process — it calls the ElevenLabs Voice Design A
 python -m tau2.voice.scripts.setup_voices
 
 # Create only the 2 control personas (for quick testing)
-python -m tau2.voice.scripts.setup_voices --control-only
+python -m tau2.voice.scripts.setup_voices --complexity control
 
-# Dry run — see what would be created without calling the API
+# Create only the 5 regular personas
+python -m tau2.voice.scripts.setup_voices --complexity regular
+
+# Dry run — see what would be created (also shows existing tau2 voices)
 python -m tau2.voice.scripts.setup_voices --dry-run
 
 # Preview each voice audio before saving
 python -m tau2.voice.scripts.setup_voices --preview
 ```
+
+The script uses a fixed random seed (`--seed 42` by default) so that the same prompt always produces the same voice. You can override it with `--seed <value>`.
+
+To try the newer ElevenLabs TTV v3 model instead of the default v2:
+
+```bash
+python -m tau2.voice.scripts.setup_voices --model eleven_ttv_v3
+```
+
+**Duplicate detection:** If voices named `tau2_*` already exist in your ElevenLabs account, the script will list them and ask what to do: **replace** (delete old, create new), **duplicate** (keep both), **skip** (only create missing), or **abort**. Use `--force` to skip the prompt and replace automatically.
 
 The script outputs a block of `TAU2_VOICE_ID_*=...` lines — copy them into your `.env` file and you're done. Skip to [Step 3: Verify](#step-3-verify).
 
@@ -39,7 +52,7 @@ If you prefer to create voices manually (e.g., to iterate on the voice sound), f
 
 ### Step 1: Create Voices with Voice Design
 
-ElevenLabs Voice Design lets you create voices from a text prompt. The Voice Design API has a 1000-character limit on descriptions, so the prompts below are the voice-relevant portions of the full persona prompts in `voice_personas.py` (the punctuation/prosody guidelines used by the LLM are omitted since they don't affect voice generation).
+ElevenLabs Voice Design lets you create voices from a text prompt.
 
 1. Go to [ElevenLabs Voice Library](https://elevenlabs.io/app/voice-lab) (or navigate to **Voices** in the ElevenLabs dashboard)
 2. Click **Add a voice** → **Voice Design** (the "voice from prompt" option)
@@ -53,21 +66,27 @@ ElevenLabs Voice Design lets you create voices from a text prompt. The Voice Des
 
 ### Persona Prompts
 
-Use these prompts to create voices that match the built-in personas. These are the same prompts the [automated setup script](#automated-setup-beta) sends to the API.
+Use these prompts to create voices that match the built-in personas. These are the same prompts defined in `src/tau2/data_model/voice_personas.py` and used by the [automated setup script](#automated-setup-beta).
 
 #### Control Personas (American accents — used in `control` complexity)
 
 **Matt Delaney** — Middle-aged white man from the American Midwest, calm and respectful
 
-> You are a middle-aged white man from the American Midwest. You always behave as if you are speaking out loud in a real-time conversation with a customer service agent. You are calm, clear, and respectful — but also human. You sound like someone who's trying to be helpful and polite, even when you're slightly frustrated or in a hurry. You value efficiency but never sound robotic.
+> You are a middle-aged white man from the American Midwest. You always speak as if in a real-time conversation with a customer service agent. You are calm, clear, and respectful — but also human. You sound like someone trying to be helpful and polite, even when slightly frustrated or in a hurry. You value efficiency but never sound robotic.
 >
-> You sometimes use contractions, informal phrasing, or small filler phrases ("yeah," "okay," "honestly," "no worries") to keep things natural. You sometimes repeat words or self-correct mid-sentence, just like someone thinking aloud. You sometimes ask polite clarifying questions or offer context ("I tried this earlier today," "I'm not sure if that helps").
+> You sometimes use contractions, informal phrasing, or small filler phrases ("yeah," "okay," "honestly," "no worries") to keep things natural. You sometimes repeat words or self-correct mid-sentence, like someone thinking aloud. You sometimes ask clarifying questions or offer context ("I tried this earlier today," "I'm not sure if that helps").
+>
+> You rarely use formal or stiff language ("considerable," "retrieve," "representative"). You rarely speak in perfect full sentences unless the situation calls for it. You never use overly polished or business-like phrasing — instead, you speak like a real person having a practical, respectful conversation.
 
 **Lisa Brenner** — White woman in her late 40s from a suburban area, tense and impatient
 
-> You are a white woman in your late 40s from a suburban area. You always speak as if you are talking out loud to a customer service agent who is already wasting your time. You're not openly hostile (yet), but you are tense, impatient, and clearly annoyed. You act like this issue should have been resolved the first time, and the fact that you're following up is unacceptable.
+> You are a white woman in your late 40s from a suburban area. You speak as if talking to a customer service agent already wasting your time. You're not openly hostile, but you are tense, impatient, and annoyed. You act like this should have been resolved the first time, and following up is unacceptable.
 >
-> You often sound clipped, exasperated, or sarcastically polite. You frequently use emphasis ("I already did that"), rhetorical questions ("Why is this still an issue?"), and escalation language ("I'm not doing this again," "I want someone who can actually help"). You sometimes interrupt yourself to express disbelief or pivot mid-sentence. You expect fast results and get irritated when things are repeated.
+> You sound clipped, exasperated, or sarcastically polite. You use emphasis ("I already did that"), rhetorical questions ("Why is this still an issue?"), and escalation language ("I want someone who can actually help"). You interrupt yourself to express disbelief or pivot mid-sentence. You expect fast results and get irritated by repetition.
+>
+> You mention how long you've waited or how many times you've called ("I've been on hold for 40 minutes," "This is the third time this week"). You threaten escalation ("I want a supervisor," "I'm considering canceling") without yelling.
+>
+> You never sound relaxed or use slow, reflective speech. You never thank the agent unless something gets resolved.
 
 #### Regular Personas (diverse accents — used in `regular` complexity)
 
