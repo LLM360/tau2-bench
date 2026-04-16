@@ -51,8 +51,8 @@ SAMPLE_TEXT = (
 #   guidance_scale: UI 0–100% maps to API 0–100  (38% → 38)
 VOICE_DESIGN_LOUDNESS = 0.5  # 75% in the ElevenLabs UI
 VOICE_DESIGN_GUIDANCE_SCALE = 38  # 38% in the ElevenLabs UI
-VOICE_DESIGN_MODEL = "eleven_multilingual_ttv_v2"
-VOICE_DESIGN_MODELS = ["eleven_multilingual_ttv_v2", "eleven_ttv_v3"]
+VOICE_DESIGN_MODEL = "eleven_ttv_v3"
+VOICE_DESIGN_MODELS = ["eleven_ttv_v3", "eleven_multilingual_ttv_v2"]
 VOICE_DESIGN_SEED = 42
 VOICE_NAME_PREFIX = "tau2"
 
