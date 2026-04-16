@@ -11,7 +11,9 @@ The default voice IDs in the codebase are Sierra's internal voices and **will no
 - An [ElevenLabs](https://elevenlabs.io/) account (free tier works for testing)
 - `ELEVENLABS_API_KEY` set in your `.env` file
 
-## Automated Setup (Recommended)
+## Automated Setup (Beta)
+
+> **Beta:** This script has not been extensively tested yet. If you run into issues, fall back to the [manual setup](#manual-setup-via-elevenlabs-ui) below.
 
 A script automates the entire process — it calls the ElevenLabs Voice Design API to create all voices and prints the environment variables to paste into your `.env`:
 
@@ -51,7 +53,7 @@ ElevenLabs Voice Design lets you create voices from a text prompt. The Voice Des
 
 ### Persona Prompts
 
-Use these prompts to create voices that match the built-in personas. These are the same prompts the [automated setup script](#automated-setup-recommended) sends to the API.
+Use these prompts to create voices that match the built-in personas. These are the same prompts the [automated setup script](#automated-setup-beta) sends to the API.
 
 #### Control Personas (American accents — used in `control` complexity)
 
