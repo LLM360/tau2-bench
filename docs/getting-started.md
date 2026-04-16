@@ -100,6 +100,8 @@ Results are saved in `data/simulations/`.
 
 ### Audio native mode (voice full-duplex)
 
+> **Prerequisite:** Voice mode requires custom ElevenLabs voices for the user simulator. You must set these up before running voice evaluations. See the [Voice Persona Setup Guide](voice-personas.md) — the automated script takes care of everything in one command.
+
 ```bash
 tau2 run --domain retail --audio-native --num-tasks 1 --verbose-logs
 ```
