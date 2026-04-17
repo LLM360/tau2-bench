@@ -188,13 +188,14 @@ def to_litellm_messages(messages: list[Message]) -> list[dict]:
                     }
                     for tc in message.tool_calls
                 ]
-            litellm_messages.append(
-                {
-                    "role": "assistant",
-                    "content": message.content,
-                    "tool_calls": tool_calls,
-                }
-            )
+            assistant_msg: dict = {
+                "role": "assistant",
+                "content": message.content,
+                "tool_calls": tool_calls,
+            }
+            if message.reasoning_content:
+                assistant_msg["reasoning_content"] = message.reasoning_content
+            litellm_messages.append(assistant_msg)
         elif isinstance(message, ToolMessage):
             litellm_messages.append(
                 {
@@ -432,6 +433,7 @@ def generate(
         "The response should be an assistant message"
     )
     content = response_choice.message.content
+    reasoning_content = getattr(response_choice.message, "reasoning_content", None)
     raw_tool_calls = response_choice.message.tool_calls or []
     tool_calls = [
         ToolCall(
@@ -446,6 +448,7 @@ def generate(
     message = AssistantMessage(
         role="assistant",
         content=content,
+        reasoning_content=reasoning_content,
         tool_calls=tool_calls,
         cost=cost,
         usage=usage,
